@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tap Coin - Telegram Mini App</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" class="app-container">
+        <!-- Header Profile & Level -->
+        <header class="header-card">
+            <div class="user-info">
+                <div class="avatar-container">
+                    <img id="user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=TelegramPlayer" alt="User Avatar" class="avatar-img">
+                </div>
+                <div class="user-details">
+                    <h2 id="user-name" class="username">Telegram User</h2>
+                    <span id="user-badge" class="badge">Beginner Tapper</span>
+                </div>
+            </div>
+            <div class="passive-income-badge">
+                <span class="passive-icon">⚡</span>
+                <div class="passive-info">
+                    <span class="passive-label">Auto-Miner</span>
+                    <span id="auto-miner-rate" class="passive-val">+0/detik</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Screen: Tap Game -->
+        <main id="tab-game" class="tab-content active">
+            <!-- Balance Counter -->
+            <div class="balance-container">
+                <div class="coin-icon-header">🪙</div>
+                <div class="balance-info">
+                    <h1 id="coin-balance" class="balance-text">0</h1>
+                    <span class="balance-label">TOTAL KOIN</span>
+                </div>
+            </div>
+
+            <!-- Rank Progress Bar -->
+            <div class="rank-card">
+                <div class="rank-header">
+                    <span id="current-rank-name" class="rank-title">Bronze Tier</span>
+                    <span id="rank-progress-text" class="rank-percent">0 / 1,000</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="rank-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Central Clickable Coin -->
+            <div class="coin-zone">
+                <div class="coin-aura"></div>
+                <button id="tap-btn" class="coin-button" aria-label="Tap to earn coins">
+                    <div class="coin-inner">
+                        <span class="coin-symbol">🪙</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Energy Bar & Recharge Status -->
+            <div class="energy-card">
+                <div class="energy-info">
+                    <div class="energy-label">
+                        <span class="energy-icon">⚡</span>
+                        <span id="energy-count">1000 / 1000</span>
+                    </div>
+                    <span id="recharge-status" class="recharge-text">Pulih otomatis</span>
+                </div>
+                <div class="progress-bar-bg energy-bg">
+                    <div id="energy-progress-bar" class="progress-bar-fill energy-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Tab Screen: Upgrades / Boosts -->
+        <section id="tab-upgrades" class="tab-content">
+            <div class="section-title">
+                <h2>Boost & Upgrades</h2>
+                <p>Tingkatkan pendapatan koin dan kapasitas Anda!</p>
+            </div>
+
+            <div class="upgrades-list">
+                <!-- Multitap Upgrade Card -->
+                <div class="upgrade-card" id="upgrade-multitap">
+                    <div class="upgrade-icon">👆</div>
+                    <div class="upgrade-info">
+                        <h3>Multitap Boost</h3>
+                        <p>Tambah +1 koin per sentuhan</p>
+                        <div class="upgrade-meta">
+                            <span class="lvl-tag">Lvl <span id="multitap-lvl">1</span></span>
+                            <span class="cost-tag">🪙 <span id="multitap-cost">50</span></span>
+                        </div>
+                    </div>
+                    <button class="btn-buy" id="buy-multitap-btn">Upgrade</button>
+                </div>
+
+                <!-- Energy Capacity Upgrade Card -->
+                <div class="upgrade-card" id="upgrade-energy">
+                    <div class="upgrade-icon">🔋</div>
+                    <div class="upgrade-info">
+                        <h3>Max Energy</h3>
+                        <p>Tambah +500 batas maksimal energi</p>
+                        <div class="upgrade-meta">
+                            <span class="lvl-tag">Lvl <span id="energy-lvl">1</span></span>
+                            <span class="cost-tag">🪙 <span id="energy-cost">100</span></span>
+                        </div>
+                    </div>
+                    <button class="btn-buy" id="buy-energy-btn">Upgrade</button>
+                </div>
+
+                <!-- Auto-Miner Upgrade Card -->
+                <div class="upgrade-card" id="upgrade-miner">
+                    <div class="upgrade-icon">🤖</div>
+                    <div class="upgrade-info">
+                        <h3>Auto-Miner Bot</h3>
+                        <p>Hasilkan koin otomatis per detik saat game berjalan</p>
+                        <div class="upgrade-meta">
+                            <span class="lvl-tag">Lvl <span id="miner-lvl">0</span></span>
+                            <span class="cost-tag">🪙 <span id="miner-cost">250</span></span>
+                        </div>
+                    </div>
+                    <button class="btn-buy" id="buy-miner-btn">Upgrade</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab Screen: Tasks & Rewards -->
+        <section id="tab-tasks" class="tab-content">
+            <div class="section-title">
+                <h2>Tugas & Hadiah</h2>
+                <p>Selesaikan tugas untuk bonus koin melimpah!</p>
+            </div>
+
+            <div class="tasks-list">
+                <!-- Daily Check-in Task -->
+                <div class="task-card">
+                    <div class="task-icon">🎁</div>
+                    <div class="task-info">
+                        <h3>Daily Reward</h3>
+                        <p>Klaim bonus login harian Anda</p>
+                        <span class="task-reward">+500 Koin</span>
+                    </div>
+                    <button class="btn-claim" id="claim-daily-btn">Klaim</button>
+                </div>
+
+                <!-- Join Channel Task -->
+                <div class="task-card">
+                    <div class="task-icon">📢</div>
+                    <div class="task-info">
+                        <h3>Join Telegram Channel</h3>
+                        <p>Ikuti berita terbaru aplikasi kami</p>
+                        <span class="task-reward">+1,000 Koin</span>
+                    </div>
+                    <button class="btn-claim" id="claim-channel-btn">Klaim</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="tab-game">
+                <span class="nav-icon">🎮</span>
+                <span class="nav-label">Tap Game</span>
+            </button>
+            <button class="nav-item" data-tab="tab-upgrades">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-label">Upgrades</span>
+            </button>
+            <button class="nav-item" data-tab="tab-tasks">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-label">Tasks</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-notification" class="toast hidden"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Secret / Environment variables
+.env
+.env.local
+*.log
+
+# Node modules / Cache
+node_modules/
+__pycache__/
+*.pyc
